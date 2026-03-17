@@ -1,154 +1,144 @@
 # CPP Module 02 - Fixed-Point Arithmetic & Operator Overloading
 
-![C++](https://img.shields.io/badge/C++-98-00599C?style=flat&logo=c%2B%2B&logoColor=white)
-![C++]README.md creado exitosamente con:
+![C++98](https://img.shields.io/badge/C++-98-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![42 School](https://img.shields.io/badge/42-School-000000?style=for-the-badge&logo=42&logoColor=white)
+![OOP](https://img.shields.io/badge/Paradigm-OOP-239120?style=for-the-badge)
+![Memory Management](https://img.shields.io/badge/Concept-Memory_Management-DC382D?style=for-the-badge)
 
-- Badges de C++98, 42 School, OOP y Memory Management
-- Descripcion clara del proyecto de punto fijo
-- Features basados en el codigo real (ex00-ex03)
-- Stack tecnologico extraido del Makefile
-- Decisiones tecnicas explicando porque punto fijo vs flotante
-- Diagrama Mermaid mostrando la progresion de ejercicios
-- Guia de instalacion con comandos Make
-- Links de contacto GitHub yLinkedIn
-na clase de numeros de punto fijo (`Fixed`) con sobrecarga completa de operadores, culminando en un algoritmo de **Binary Space Partitioning (BSP)** para detectar si un punto reside dentro de un triangulo.
+## Descripcion
 
-## Features
+Implementacion completa de una clase de numeros en punto fijo (`Fixed`) con 8 bits fraccionales, siguiendo el **Orthodox Canonical Form**. El proyecto culmina aplicando estos conceptos en un algoritmo **BSP (Binary Space Partitioning)** para determinar si un punto pertenece al interior de un triangulo.
+
+## Caracteristicas Principales
 
 - Clase `Fixed` con representacion de punto fijo (8 bits fraccionales)
-- **Canonical Orthodox Form** completo (Constructor, Copy Constructor, Assignment Operator, Destructor)
-- Sobrecarga de operadores aritmeticos (`+`, `-`, `*`, `/`)
-- Sobrecarga de operadores de comparacion (`>`, `<`, `>=`, `<=`, `==`, `!=`)
-- Sobrecarga de operadores de incremento/decremento (`++`, `--`)
-- Funciones estaticas `min()` y `max()` sobrecargadas
-- Operador de insercion de flujo (`<<`) para output
-- Algoritmo BSP para determinar pertenencia de punto a triangulo
+- Canon Orthodox Form completo (Default constructor, Copy constructor, Assignment operator, Destructor)
+- Conversiones entre tipos: `int` <-> `Fixed` <-> `float`
+- Sobrecarga de operadores aritmeticos: `+`, `-`, `*`, `/`
+- Sobrecarga de operadores de comparacion: `>`, `<`, `>=`, `<=`, `==`, `!=`
+- Operadores de incremento/decremento: pre-incremento (`++a`) y post-incremento (`a++`)
+- Funciones estaticas `min()` y `max()` sobrecargadas (const y non-const)
+- Algoritmo geometrico BSP para deteccion de punto en triangulo
 
 ## Stack Tecnologico
 
-| Componente | Descripcion |
-|------------|-------------|
+| Componente | Tecnologia |
+|------------|------------|
 | Lenguaje | C++ (std=c++98) |
-| Compilador | c++ (clang++) |
-| Standard | C++98 |
+| Compilador | clang++ / g++ |
+| Build System | Make |
 | Flags | `-Wall -Werror -Wextra -g` |
 
-## Arquitectura y Decisiones Tecnicas
+## Decisiones Tecnicas y Arquitectura
 
-Se opto por una representacion de **punto fijo** en lugar de flotante por dos razones fundamentales:
+Se opta por **punto fijo** sobre punto flotante por razones fundamentales:
 
-1. **Determinismo**: Los numeros de punto fijo garantizan resultados reproducibles entre plataformas, critico en sistemas embebidos y simulaciones.
-2. **Rendimiento**: Operaciones aritmeticas en enteros son significativamente mas rapidas que en punto flotante en hardware sin FPU.
+**Determinismo**: Los numeros de punto fijo producen resultados reproducibles entre plataformas, critico en simulaciones, sistemas embebidos y Finanzas cuantitativas donde la precision decimal exacta es mandate.
 
-La arquitectura sigue el patron **Canonical Orthodox Form** exigido por 42 School, asegurando gestion correcta de recursos con el patron Rule of Three (Constructor de copia, Operador de asignacion, Destructor).
+**Rendimiento**: Las operaciones con enteros son intrinsecamente mas rapidas que con punto flotante, especialmente en arquitecturas sin FPU dedicada.
 
-El ejercicio `ex03` aplica estos fundamentos para resolver un problema geometrico real: verificar si un punto esta dentro de un triangulo mediante el calculo de areas parciales.
+La arquitectura sigue el **Orthodox Canonical Form** exigido por 42 School, implementando el "Rule of Three": constructor por copia, operador de asignacion y destructor para gestion correcta de recursos.
+
+El ejercicio final (`ex03`) demuestra la aplicacion practica: utilizar aritmetica de punto fijo para calcular areas parciales y determinar inclusion de punto en triangulo mediante la formula del determinante.
 
 ## Diagrama de Arquitectura
 
 ```mermaid
-flowchart TB
-    subgraph ex00["Ex00 - Fundamentos"]
-        A[Fixed Class] --> B[rawBits: int]
-        A --> C[fractional: 8 bits]
-        A --> D[Constructores Basicos]
-        D --> D1[Default]
-        D --> D2[Copy]
-        D --> D3[Assignment]
+flowchart LR
+    subgraph ex00["Ex00"]
+        A[Fixed Class<br>rawBits + fractional]
+        B[Canon Form<br>Constructor/Destructor]
     end
-
-    subgraph ex01["Ex01 - Conversion"]
-        E[Fixed Class] --> F[Conversores int/float]
-        E --> G[Operador Stream]
+    subgraph ex01["Ex01"]
+        C[int/float<br>Conversion]
+        D[operator&lt;&lt;]
     end
-
-    subgraph ex02["Ex02 - Operadores"]
-        H[Fixed Class] --> I[Operadores Aritmeticos]
-        H --> J[Operadores Comparacion]
-        H --> K[Incremento/Decremento]
-        H --> L[Static min/max]
+    subgraph ex02["Ex02"]
+        E[Arithmetic<br>Operators]
+        F[Comparison<br>Operators]
+        G[++/-- Operators<br>min/max static]
     end
-
-    subgraph ex03["Ex03 - Aplicacion BSP"]
-        M[Point Class] --> N[x: Fixed]
-        M --> O[y: Fixed]
-        P[BSP Function] --> Q[Calculo Areas]
-        Q --> R["Verifica: A_total == A1+A2+A3"]
+    subgraph ex03["Ex03"]
+        H[Point Class<br>x,y: Fixed]
+        I[BSP Algorithm]
     end
-
-    ex00 --> ex01
-    ex01 --> ex02
-    ex02 --> ex03
+    ex00 --> ex01 --> ex02 --> ex03
 ```
 
-## Guia de Instalacion
+## Instalacion y Ejecucion
 
 ### Prerrequisitos
 
-- Compilador C++ compatible con C++98 (clang++, g++)
+- Compilador C++ (clang++ o g++)
 - Make
 
-### Compilacion y Ejecucion
+### Compilacion
 
 ```bash
-# Ejercicio 00 - Fundamentos
+# Ex00 - Orthodox Canonical Form
 cd ex00 && make && ./program
 
-# Ejercicio 01 - Conversion
+# Ex01 - Conversores y Stream
 cd ex01 && make && ./program
 
-# Ejercicio 02 - Operadores
+# Ex02 - Operadores Sobrecargados
 cd ex02 && make && ./program
 
-# Ejercicio 03 - BSP
+# Ex03 - BSP Point-in-Triangle
 cd ex03 && make && ./program
 ```
 
 ### Limpieza
 
 ```bash
-make fclean  # Limpia objetos y ejecutable
-make re      # Recompila desde cero
+make fclean    # Elimina objetos y ejecutable
+make re        # Recompila desde cero
 ```
 
 ## Estructura del Proyecto
 
 ```
-.
-ex00/
-  |-- src/
-  |   |-- Fixed/Fixed.{hpp,cpp}
-  |   |-- main.cpp
-  |-- Makefile
-ex01/
-  |-- src/
-  |   |-- Fixed/Fixed.{hpp,cpp}
-  |   |-- main.cpp
-  |-- Makefile
-ex02/
-  |-- src/
-  |   |-- Fixed/Fixed.{hpp,cpp}
-  |   |-- main.cpp
-  |-- Makefile
-ex03/
-  |-- src/
-  |   |-- Fixed/Fixed.{hpp,cpp}
-  |   |-- Point/Point.{hpp,cpp}
-  |   |-- bsp.cpp
-  |   |-- main.cpp
-  |-- Makefile
+CPP-MODULE-02/
+├── ex00/
+│   ├── src/
+│   │   ├── Fixed/Fixed.hpp
+│   │   ├── Fixed/Fixed.cpp
+│   │   └── main.cpp
+│   └── Makefile
+├── ex01/
+│   ├── src/
+│   │   ├── Fixed/Fixed.hpp
+│   │   ├── Fixed/Fixed.cpp
+│   │   └── main.cpp
+│   └── Makefile
+├── ex02/
+│   ├── src/
+│   │   ├── Fixed/Fixed.hpp
+│   │   ├── Fixed/Fixed.cpp
+│   │   └── main.cpp
+│   └── Makefile
+├── ex03/
+│   ├── src/
+│   │   ├── Fixed/Fixed.hpp
+│   │   ├── Fixed/Fixed.cpp
+│   │   ├── Point/Point.hpp
+│   │   ├── Point/Point.cpp
+│   │   ├── bsp.cpp
+│   │   └── main.cpp
+│   └── Makefile
 ```
 
 ## Aprendizajes Clave
 
-- Orthodox Canonical Form y su importancia en la gestion de recursos
-- Diferencia entre shallow copy y deep copy
-- Sobrecarga de operadores miembros vs no miembros
-- Operadores de pre-incremento vs post-incremento
-- Funciones miembro const-correctness
-- Static member functions
+- Implementacion correcta del Orthodox Canonical Form
+- Sobrecarga de operadores miembros vs no miembros (friend functions)
+- Diferencia entre pre-incremento (`++a`) y post-incremento (`a++`)
+- Const-correctness en funciones miembro
+- Static member functions y su uso
+- Representacion interna de numeros decimales sin punto flotante
+- Aplicacion geometrica: formula del area del triangulo mediante determinantes
 
 ## Contacto
 
-[![GitHub](https://img.shields.io/badge/GitHub-samuelhm-181717?style=flat&logo=github)](https://github.com/samuelhm/)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-shurtado--m-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/shurtado-m/)
+[![GitHub](https://img.shields.io/badge/GitHub-samuelhm-181717?style=for-the-badge&logo=github)](https://github.com/samuelhm/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-shurtado--m-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/shurtado-m/)
